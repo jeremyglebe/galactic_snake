@@ -1,0 +1,31 @@
+{
+  "name": "dicerole_engine",
+  "version": "0.0.1",
+  "description": "Dungeon Interaction & Character Evolution engine for ROLEplaying games.",
+  "main": "main.js",
+  "scripts": {
+    "test": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kings-Tithe/dicerole_engine.git"
+  },
+  "keywords": [
+    "dungeon",
+    "interaction",
+    "character",
+    "evolution",
+    "tabletop",
+    "roleplaying",
+    "engine",
+    "combat",
+    "grid",
+    "skills"
+  ],
+  "author": "jeremyglebe",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Kings-Tithe/dicerole_engine/issues"
+  },
+  "homepage": "https://github.com/Kings-Tithe/dicerole_engine#readme"
+}
