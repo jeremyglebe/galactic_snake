@@ -1,0 +1,1 @@
+TypeScript files in the `src/` directory will be compiled into `app/app.js`. `app.js` contains the core functionality and rendering code of the application.

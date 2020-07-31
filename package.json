@@ -2,9 +2,9 @@
   "name": "dicerole_engine",
   "version": "0.0.1",
   "description": "Dungeon Interaction & Character Evolution engine for ROLEplaying games.",
-  "main": "main.js",
+  "main": "app/launch.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=development electron ."
+    "test": "tsc -w & cross-env NODE_ENV=development electron ."
   },
   "repository": {
     "type": "git",
