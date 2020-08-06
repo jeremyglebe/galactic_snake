@@ -12,6 +12,7 @@ function createGameWindow() {
     const gameWindow = new BrowserWindow({
         width: 1280,
         height: 720,
+        backgroundColor: '#000',
         webPreferences: {
             nodeIntegration: true
         }
