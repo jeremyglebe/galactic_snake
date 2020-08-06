@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow } = require('electron');
 
 // Include tools in development environments
 if (process.env.NODE_ENV == "development") {
@@ -15,9 +15,9 @@ function createGameWindow() {
         webPreferences: {
             nodeIntegration: true
         }
-    })
+    });
     // Load the main HTML file in the game window
-    gameWindow.loadFile('app/index.html')
+    gameWindow.loadFile('app/index.html');
 }
 // When electron is ready, start the game's display window
 app.whenReady().then(createGameWindow);
