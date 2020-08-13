@@ -1,5 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 
+// Can't figure out why but these lines don't seem to be running...
+console.log("Not running dev mode");
 // Include tools in development environments
 if (process.env.NODE_ENV == "development") {
     console.log("Running in development mode.");
@@ -8,6 +10,9 @@ if (process.env.NODE_ENV == "development") {
 }
 
 function createGameWindow() {
+
+    setInterval(console.log, 100, "FUASOGBUOSAB");
+
     // Create a browser window for the game to be displayed in
     const gameWindow = new BrowserWindow({
         width: 1280,

@@ -1,13 +1,22 @@
-import { htmlToElement, htmlToElementList } from 'tools/htmlTools';
+import { stringToElement, stringtoElementList, fileToElement, fileToElementList } from 'tools/htmlTools';
 
-let paragraph = htmlToElement("<p>Hello my friend!</p>");
-let divs = htmlToElementList("<div>So</div><div>many</div><div>elements</div><div>!!!</div>");
+let paragraph = stringToElement("<p>Hello my friend!</p>");
+let divs = stringtoElementList("<div>So</div><div>many</div><div>elements</div><div>!!!</div>");
 
 document.body.appendChild(paragraph);
 divs.forEach(
-    (child) => {
-        document.body.appendChild(child);
+    (node) => {
+        document.body.appendChild(node);
     }
 );
 
-document.body.append("<p>Can we append html this way</p><br><p>And if so, do we need the helper functions?</p>");
+// HTML Template Files are still broken...
+// let fileFirstElement = fileToElement("menus/test.html");
+// let fileElements = fileToElementList("menus/test.html");
+
+// document.body.appendChild(fileFirstElement);
+// fileElements.forEach(
+//     (node) => {
+//         document.body.appendChild(node);
+//     }
+// )
