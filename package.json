@@ -1,16 +1,23 @@
 {
-  "name": "dicerole_engine",
+  "name": "kt_game_starter",
   "version": "0.0.1",
-  "description": "Dungeon Interaction & Character Evolution engine for ROLEplaying games.",
-  "main": "app/launch.js",
-  "scripts": {
-    "start": "(tsc -w & cross-env NODE_ENV=development electron .; wait;)"
-  },
+  "description": "King's Tithe Game Starter for Phaser",
+  "author": "jeremyglebe",
+  "homepage": "https://github.com/Kings-Tithe/dicerole_engine#readme",
+  "license": "UNLICENSED",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Kings-Tithe/dicerole_engine.git"
   },
+  "bugs": {
+    "url": "https://github.com/Kings-Tithe/dicerole_engine/issues"
+  },
   "keywords": [
+    "Phaser",
+    "Phaser 3",
+    "Phaser3",
+    "TypeScript",
+    "Webpack",
     "dungeon",
     "interaction",
     "character",
@@ -22,18 +29,31 @@
     "grid",
     "skills"
   ],
-  "author": "jeremyglebe",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/Kings-Tithe/dicerole_engine/issues"
-  },
-  "homepage": "https://github.com/Kings-Tithe/dicerole_engine#readme",
   "devDependencies": {
-    "cross-env": "^7.0.2",
-    "electron": "^9.2.0",
-    "electron-packager": "^15.0.0",
-    "electron-reload": "^1.5.0",
-    "typescript": "^3.9.7"
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "babel-loader": "^8.1.0",
+    "capacitor-app": "file:electron",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^6.0.3",
+    "source-map-loader": "^1.0.2",
+    "ts-loader": "^8.0.3",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@capacitor/android": "^2.4.0",
+    "@capacitor/cli": "^1.0.0-beta.7",
+    "@capacitor/core": "^1.0.0-beta.7",
+    "@capacitor/ios": "^1.0.0-beta.7",
+    "phaser": "^3.24.1"
+  },
+  "scripts": {
+    "dev": "webpack && webpack-dev-server --mode development --open",
+    "dev:lan": "webpack && webpack-dev-server --mode development --host 0.0.0.0",
+    "prod": "webpack && webpack-dev-server --mode production",
+    "build": "webpack --mode production && npx cap copy"
+  }
 }
