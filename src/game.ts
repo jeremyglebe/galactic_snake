@@ -3,6 +3,7 @@ import * as Phaser from 'phaser';
 
 import { Plugins } from '@capacitor/core';
 import { SCREEN_WIDE, SCREEN_RATIO } from './constants';
+import { writeFile } from './util/file-ops';
 
 const config: Phaser.Types.Core.GameConfig = {
   parent: 'game',
@@ -35,6 +36,14 @@ export class KTGame extends Phaser.Game {
     // Example of scene management
     // this.scene.add('Boot', BootScene, false);
     // this.scene.start('Boot');
+
+    writeFile(
+      {
+        location: 'documents',
+        filePath: 'wut.txt'
+      },
+      "Hello there"
+    );
 
     StatusBar.hide();
     SplashScreen.hide();
