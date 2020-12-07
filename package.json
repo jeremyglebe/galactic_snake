@@ -55,6 +55,6 @@
     "prod": "webpack && webpack-dev-server --mode production",
     "build": "webpack --mode production && npx cap copy",
     "template:init": "git remote add template https://github.com/Kings-Tithe/kt_game_starter.git",
-    "template:update": "git fetch --all && git merge template/master"
+    "template:update": "git fetch --all && git merge template/master --allow-unrelated-histories"
   }
 }
