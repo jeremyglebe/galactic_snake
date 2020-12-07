@@ -27,3 +27,9 @@ $RECYCLE.BIN/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+
+
+# Custom ignores
+package-lock.json
+android/
+electron/

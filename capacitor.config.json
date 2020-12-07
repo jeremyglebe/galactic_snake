@@ -2,5 +2,6 @@
   "appId": "com.kingstithe.gamestarter",
   "appName": "kt_game_starter",
   "bundledWebRuntime": false,
-  "webDir": "www"
+  "webDir": "www",
+  "npmClient": "npm"
 }

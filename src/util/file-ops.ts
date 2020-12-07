@@ -20,9 +20,16 @@ export interface FileSpecifier {
     // The root directory to use on desktops. This property is only used if
     // location is set to 'data'. 'app' will use a subfolder in electron app.
     // 'documents' will match files in the OS documents folder.
-    desktopDir?: string
+    desktopDataDirectory?: string
     // Preset directories to use as root.
     // Valid choices are: documents, data, app
+    // For mobile, 'documents' and 'data' work as described here:
+    // https://capacitorjs.com/docs/apis/filesystem#filesystemdirectory
+    // For mobile, 'app' works just like 'data'. (We can't save to app directory on mobile)
+    // For electron/desktop:
+    // 'documents' should save to the OS's documents folder
+    // 'data' should save to a folder specified in the desktopDataDirectory property
+    // 'app' will save to a subdirectory of the app, 'appdata/'
     location: string,
     // When using web (such as dev server) how should we resolve save/load
     // operations? (web does not have access to filesystem)
@@ -43,7 +50,7 @@ export async function writeFile(file: FileSpecifier, data: string): Promise<bool
             try {
                 await fs.writeFileSync(path.resolve(__dirname, 'appdata', file.filePath), data);
                 return true;
-            } catch{
+            } catch {
                 return false;
             }
         } else if (file.location == 'documents') {
@@ -56,14 +63,14 @@ export async function writeFile(file: FileSpecifier, data: string): Promise<bool
                     }
                 );
                 return true;
-            } catch{
+            } catch {
                 return false;
             }
         } else {
             try {
-                await fs.writeFileSync(path.resolve(file.desktopDir, file.filePath), data);
+                await fs.writeFileSync(path.resolve(file.desktopDataDirectory, file.filePath), data);
                 return true;
-            } catch{
+            } catch {
                 return false;
             }
         }
@@ -71,7 +78,7 @@ export async function writeFile(file: FileSpecifier, data: string): Promise<bool
         let directory: any;
         if (file.location == 'documents') directory = FilesystemDirectory.Documents;
         else if (file.location == 'data') directory = FilesystemDirectory.Data;
-        else directory = FilesystemDirectory.Application;
+        else directory = FilesystemDirectory.Data;
         try {
             await Filesystem.writeFile(
                 {
@@ -81,7 +88,7 @@ export async function writeFile(file: FileSpecifier, data: string): Promise<bool
                 }
             );
             return true;
-        } catch{
+        } catch {
             return false;
         }
     }
@@ -103,13 +110,13 @@ export async function readFile(file: FileSpecifier): Promise<string> {
                 }
             )).data;
         } else {
-            return fs.readFileSync(path.resolve(file.desktopDir, file.filePath)).toString();
+            return fs.readFileSync(path.resolve(file.desktopDataDirectory, file.filePath)).toString();
         }
     } else if (Capacitor.platform == 'ios' || Capacitor.platform == 'android') {
         let directory: any;
         if (file.location == 'documents') directory = FilesystemDirectory.Documents;
         else if (file.location == 'data') directory = FilesystemDirectory.Data;
-        else directory = FilesystemDirectory.Application;
+        else directory = FilesystemDirectory.Data;
         return (await Filesystem.readFile(
             {
                 directory: directory,
