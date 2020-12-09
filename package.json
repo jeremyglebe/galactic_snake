@@ -54,10 +54,10 @@
     "dev:lan": "webpack && webpack-dev-server --mode development --host 0.0.0.0",
     "prod": "webpack && webpack-dev-server --mode production",
     "build": "webpack --mode production && npx cap copy",
-    "android:init": "cap add android",
-    "android": "cap open android",
-    "electron:init": "cap add @capacitor-community/electron",
-    "electron": "cap open @capacitor-community/electron",
+    "android:init": "npm run build && cap add android",
+    "android": "npm run build && cap open android",
+    "electron:init": "npm run build && cap add @capacitor-community/electron",
+    "electron": "npm run build && cap open @capacitor-community/electron",
     "template:init": "git remote add template https://github.com/Kings-Tithe/kt_game_starter.git",
     "template:update": "git fetch --all && git merge template/master --allow-unrelated-histories"
   }
