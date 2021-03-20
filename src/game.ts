@@ -4,8 +4,10 @@ import * as Phaser from 'phaser';
 import { Plugins } from '@capacitor/core';
 import { BASE_SIZE, SCREEN_WIDE, SCREEN_RATIO } from './constants';
 import { readFile, writeFile } from './util/file-ops';
+import { TestScene } from './scenes/test-scene';
 
-const config: Phaser.Types.Core.GameConfig = {
+// const config: Phaser.Types.Core.GameConfig = {
+const config: any = {
     parent: 'game',
     type: Phaser.AUTO,
     backgroundColor: '#000',
@@ -22,6 +24,9 @@ const config: Phaser.Types.Core.GameConfig = {
     },
     scale: {
         mode: Phaser.Scale.FIT
+    },
+    physics: {
+        default: 'arcade'
     }
 };
 
@@ -34,30 +39,7 @@ export class KTGame extends Phaser.Game {
         super(config);
 
         // Example of scene management
-        // this.scene.add('Boot', BootScene, false);
-        // this.scene.start('Boot');
-
-        // File-ops write test
-        writeFile(
-            {
-                location: 'app',
-                filePath: 'kt_fileops_test.txt',
-                webResolve: 'ram'
-            },
-            "Hello there"
-        ).then(
-            () => {
-                // File-ops read test
-                readFile(
-                    {
-                        location: 'app',
-                        filePath: 'kt_fileops_test.txt',
-                        webResolve: 'ram'
-                    }
-                ).then(
-                    text => console.log("File read: ", text)
-                );
-            });
+        this.scene.add('TestScene', TestScene, true);
 
         StatusBar.hide();
         SplashScreen.hide();
