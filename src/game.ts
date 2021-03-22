@@ -3,8 +3,9 @@ import * as Phaser from 'phaser';
 
 import { Plugins } from '@capacitor/core';
 import { BASE_SIZE, SCREEN_WIDE, SCREEN_RATIO } from './constants';
-import { readFile, writeFile } from './util/file-ops';
-import { TestScene } from './scenes/test-scene';
+import { SpaceScene } from './scenes/space-scene';
+import { BootScene } from './scenes/boot-scene';
+import { StartScene } from './scenes/start-scene';
 
 // const config: Phaser.Types.Core.GameConfig = {
 const config: any = {
@@ -26,7 +27,10 @@ const config: any = {
         mode: Phaser.Scale.FIT
     },
     physics: {
-        default: 'arcade'
+        default: 'arcade',
+        arcade: {
+            // debug: true
+        }
     }
 };
 
@@ -35,15 +39,10 @@ const { StatusBar, SplashScreen } = Plugins;
 export class KTGame extends Phaser.Game {
 
     constructor(config: Phaser.Types.Core.GameConfig) {
-
         super(config);
-
-        // Example of scene management
-        this.scene.add('TestScene', TestScene, true);
-
-        StatusBar.hide();
-        SplashScreen.hide();
-
+        this.scene.add('StartScene', StartScene, false);
+        this.scene.add('SpaceScene', SpaceScene, false);
+        this.scene.add('BootScene', BootScene, true);
     }
 
 }
