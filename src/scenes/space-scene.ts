@@ -1,27 +1,35 @@
+import { FirebaseService } from "../FirebaseService";
 import { Serpent } from "../Serpent";
 import { SpaceShip } from "../SpaceShip";
 
 export class SpaceScene extends Phaser.Scene {
+    fire: FirebaseService = null;
     parallax: Phaser.GameObjects.TileSprite[] = [];
     serpent: Serpent;
     scoreText: Phaser.GameObjects.Text;
+    saveText: Phaser.GameObjects.Text;
+    cloudStatusText: Phaser.GameObjects.Text;
     lastSpawn: number;
     spawnWait: number;
-    maxSnakeSize: number = 3;
+    maxSnakeSize: number;
+    lastSavedSize: number;
 
     constructor() {
         super("SpaceScene");
         this.spawnWait = 3000;
         this.lastSpawn = 0;
+        this.fire = FirebaseService.get();
+        this.maxSnakeSize = 3;
+        this.lastSavedSize = 3;
     }
 
     create() {
+        let w = <number>this.game.config.width;
         for (let i = 1; i <= 4; i++) {
             this.parallax[i - 1] = this.add.tileSprite(0, 0, this.sys.canvas.width, this.sys.canvas.height, `parallax${i}`).setOrigin(0);
         }
         this.serpent = new Serpent(this);
         // let ship = new SpaceShip(this, this.serpent, 300, 300);
-        let w = <number>this.game.config.width;
         this.add.text(w / 2, 20, "Largest Length Achieved", {
             color: 'white',
             fontSize: '30px',
@@ -42,9 +50,34 @@ export class SpaceScene extends Phaser.Scene {
         });
         s.play();
 
+        // Get high score from the cloud
+        this.fire.getHighScore().then((score) => {
+            this.maxSnakeSize = score;
+            this.lastSavedSize = score;
+        });
+        // Handle saving to cloud
+        this.saveText = this.add.text(w - 50, 50, "☁", {
+            color: 'white',
+            fontSize: '90px',
+            fontFamily: 'consolas',
+            fontStyle: 'bold'
+        });
+        this.saveText.setAlpha(0.3).setOrigin(0.5)
+        this.saveText.setInteractive();
+        this.saveText.on('pointerdown', () => {
+            this.fire.setHighScore(this.maxSnakeSize);
+            this.lastSavedSize = this.maxSnakeSize;
+        });
+        this.cloudStatusText = this.add.text(w - 30, 30, "√", {
+            color: 'white',
+            fontSize: '30px',
+            fontFamily: 'consolas',
+            fontStyle: 'bold'
+        }).setOrigin(0.5);
     }
 
     update() {
+        let w = <number>this.game.config.width;
         this.moveParallax();
         this.serpent.update();
         if ((new Date()).getTime() > this.lastSpawn + this.spawnWait) {
@@ -52,6 +85,14 @@ export class SpaceScene extends Phaser.Scene {
         }
         // Update the score text
         this.scoreText.setText('' + this.maxSnakeSize);
+        // Determine if the user has saved their score
+        if (this.maxSnakeSize > this.lastSavedSize) {
+            this.cloudStatusText.setText('*');
+            window.onbeforeunload = () => { return "" };
+        } else {
+            this.cloudStatusText.setText('√');
+            window.onbeforeunload = null;
+        }
     }
 
     moveParallax() {

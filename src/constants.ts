@@ -3,3 +3,6 @@ export const SCREEN_HEIGHT = window.innerHeight;
 export const SCREEN_RATIO = SCREEN_WIDTH / SCREEN_HEIGHT;
 export const SCREEN_WIDE = SCREEN_WIDTH > SCREEN_HEIGHT;
 export const BASE_SIZE = 800;
+// Theme variables
+export const UIBTN = 0x759FBC;
+export const UITXT = '#E2DBBE';

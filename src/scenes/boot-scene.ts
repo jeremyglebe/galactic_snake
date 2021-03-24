@@ -9,6 +9,8 @@ export class BootScene extends Phaser.Scene {
         for (let i = 1; i <= 4; i++) this.load.image(`parallax${i}`, `assets/parallax/parallax${i}.png`);
         for (let i = 1; i <= 4; i++) this.load.image(`planet${i}`, `assets/planets/planet${i}.png`);
         this.load.image('ship', 'assets/ship.png');
+        this.load.image('google', 'assets/google_normal.png');
+        this.load.image('google_pressed', 'assets/google_pressed.png');
         // Sounds and music
         this.load.audio('bg', 'assets/sound/slow-travel.wav');
         this.load.audio('start-level', 'assets/sound/start-level.wav');
