@@ -54,17 +54,21 @@ export class FirebaseService {
 
     }
 
-    setHighScore(score) {
+    async setHighScore(score): Promise<boolean> {
         let u = this.user();
         if (u) {
-            this.scoresCollection.doc(u.uid).set({
-                name: u.displayName,
-                score: score
-            }).then(() => {
+            try {
+                await this.scoresCollection.doc(u.uid).set({
+                    name: u.displayName,
+                    score: score
+                });
                 console.log("High score updated in cloud!");
-            }).catch((error) => {
+                return true;
+            }
+            catch (error) {
                 console.error("Error updating high score: ", error);
-            });
+                return false;
+            }
         }
     }
 
