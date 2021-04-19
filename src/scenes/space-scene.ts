@@ -1,9 +1,10 @@
-import { FirebaseService } from "../FirebaseService";
+import { FirebaseService, FirebaseUser } from "../FirebaseService";
 import { Serpent } from "../Serpent";
 import { SpaceShip } from "../SpaceShip";
 
 export class SpaceScene extends Phaser.Scene {
     fire: FirebaseService = null;
+    user: FirebaseUser = null;
     parallax: Phaser.GameObjects.TileSprite[] = [];
     serpent: Serpent;
     currScoreText: Phaser.GameObjects.Text;
@@ -25,6 +26,7 @@ export class SpaceScene extends Phaser.Scene {
     }
 
     create() {
+        this.user = this.fire.user();
         let w = <number>this.game.config.width;
         for (let i = 1; i <= 4; i++) {
             this.parallax[i - 1] = this.add.tileSprite(0, 0, this.sys.canvas.width, this.sys.canvas.height, `parallax${i}`).setOrigin(0);
@@ -51,31 +53,34 @@ export class SpaceScene extends Phaser.Scene {
         });
         s.play();
 
-        // Get high score from the cloud
-        this.fire.getHighScore().then((score) => {
-            this.maxSnakeSize = score;
-            this.lastSavedSize = score;
-        });
-        // Handle saving to cloud
-        this.saveText = this.add.text(w - 50, 50, "☁", {
-            color: 'white',
-            fontSize: '90px',
-            fontFamily: 'consolas',
-            fontStyle: 'bold'
-        });
-        this.saveText.setInteractive();
-        // Event to manually save to the cloud
-        this.saveText.on('pointerdown', () => {
-            this.fire.setHighScore(this.maxSnakeSize);
-            this.lastSavedSize = this.maxSnakeSize;
-        });
-        this.saveText.setAlpha(0.3).setOrigin(0.5)
-        this.cloudStatusText = this.add.text(w - 30, 30, "√", {
-            color: 'white',
-            fontSize: '30px',
-            fontFamily: 'consolas',
-            fontStyle: 'bold'
-        }).setOrigin(0.5);
+        if (this.user) {
+
+            // Get high score from the cloud
+            this.fire.getHighScore().then((score) => {
+                this.maxSnakeSize = score;
+                this.lastSavedSize = score;
+            });
+            // Handle saving to cloud
+            this.saveText = this.add.text(w - 50, 50, "☁", {
+                color: 'white',
+                fontSize: '90px',
+                fontFamily: 'consolas',
+                fontStyle: 'bold'
+            });
+            this.saveText.setInteractive();
+            // Event to manually save to the cloud
+            this.saveText.on('pointerdown', () => {
+                this.fire.setHighScore(this.maxSnakeSize);
+                this.lastSavedSize = this.maxSnakeSize;
+            });
+            this.saveText.setAlpha(0.3).setOrigin(0.5)
+            this.cloudStatusText = this.add.text(w - 30, 30, "√", {
+                color: 'white',
+                fontSize: '30px',
+                fontFamily: 'consolas',
+                fontStyle: 'bold'
+            }).setOrigin(0.5);
+        }
     }
 
     update() {
@@ -88,13 +93,15 @@ export class SpaceScene extends Phaser.Scene {
         // Update the score text
         this.currScoreText.setText('' + this.serpent.getLength());
         this.maxScoreText.setText('' + this.maxSnakeSize);
-        // Determine if the user has saved their score
-        if (this.maxSnakeSize > this.lastSavedSize) {
-            this.cloudStatusText.setText('*');
-            window.onbeforeunload = () => { return "" };
-        } else {
-            this.cloudStatusText.setText('√');
-            window.onbeforeunload = null;
+        if (this.user) {
+            // Determine if the user has saved their score
+            if (this.maxSnakeSize > this.lastSavedSize) {
+                this.cloudStatusText.setText('*');
+                window.onbeforeunload = () => { return "" };
+            } else {
+                this.cloudStatusText.setText('√');
+                window.onbeforeunload = null;
+            }
         }
     }
 
