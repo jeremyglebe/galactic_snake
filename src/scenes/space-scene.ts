@@ -1,6 +1,6 @@
+import { UITXT } from "../constants";
 import { FirebaseService, FirebaseUser } from "../FirebaseService";
 import { Serpent } from "../Serpent";
-import { SpaceShip } from "../SpaceShip";
 
 export class SpaceScene extends Phaser.Scene {
     fire: FirebaseService = null;
@@ -34,17 +34,17 @@ export class SpaceScene extends Phaser.Scene {
         this.serpent = new Serpent(this);
         // let ship = new SpaceShip(this, this.serpent, 300, 300);
         this.currScoreText = this.add.text(w / 2, 30, "3", {
-            color: 'white',
+            color: UITXT,
             fontSize: '45px',
             fontFamily: 'consolas',
             fontStyle: 'bold'
-        }).setAlpha(0.3).setOrigin(0.5);
+        }).setAlpha(0.5).setOrigin(0.5);
         this.maxScoreText = this.add.text(w / 2, 70, "3", {
-            color: 'white',
+            color: UITXT,
             fontSize: '30px',
             fontFamily: 'consolas',
             fontStyle: 'bold'
-        }).setAlpha(0.3).setOrigin(0.5);
+        }).setAlpha(0.5).setOrigin(0.5);
         // Play level start sound
         let s = this.sound.add('start-level');
         let m = this.sound.add('bg', { loop: true, volume: 0.5 });
@@ -54,15 +54,14 @@ export class SpaceScene extends Phaser.Scene {
         s.play();
 
         if (this.user) {
-
             // Get high score from the cloud
-            this.fire.getHighScore().then((score) => {
+            this.fire.getMyHighScore().then((score) => {
                 this.maxSnakeSize = score;
                 this.lastSavedSize = score;
             });
             // Handle saving to cloud
             this.saveText = this.add.text(w - 50, 50, "☁", {
-                color: 'white',
+                color: UITXT,
                 fontSize: '90px',
                 fontFamily: 'consolas',
                 fontStyle: 'bold'
@@ -70,12 +69,12 @@ export class SpaceScene extends Phaser.Scene {
             this.saveText.setInteractive();
             // Event to manually save to the cloud
             this.saveText.on('pointerdown', () => {
-                this.fire.setHighScore(this.maxSnakeSize);
+                this.fire.setMyHighScore(this.maxSnakeSize);
                 this.lastSavedSize = this.maxSnakeSize;
             });
-            this.saveText.setAlpha(0.3).setOrigin(0.5)
+            this.saveText.setAlpha(0.5).setOrigin(0.5)
             this.cloudStatusText = this.add.text(w - 30, 30, "√", {
-                color: 'white',
+                color: UITXT,
                 fontSize: '30px',
                 fontFamily: 'consolas',
                 fontStyle: 'bold'
@@ -132,7 +131,7 @@ export class SpaceScene extends Phaser.Scene {
                     if (this.serpent.getLength() > this.maxSnakeSize) {
                         this.maxSnakeSize = this.serpent.getLength();
                         // Update the high score in the firestore database
-                        this.fire.setHighScore(this.maxSnakeSize).then((success) => {
+                        this.fire.setMyHighScore(this.maxSnakeSize).then((success) => {
                             if (success) {
                                 // Update the last saved size if it worked
                                 this.lastSavedSize = this.maxSnakeSize;

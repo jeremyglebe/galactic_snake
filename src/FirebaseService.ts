@@ -37,7 +37,7 @@ export class FirebaseService {
         return FirebaseService.instance;
     }
 
-    async getHighScore() {
+    async getMyHighScore() {
         try {
             let u = this.user();
             if (u) {
@@ -54,7 +54,7 @@ export class FirebaseService {
 
     }
 
-    async setHighScore(score): Promise<boolean> {
+    async setMyHighScore(score): Promise<boolean> {
         let u = this.user();
         if (u) {
             try {
