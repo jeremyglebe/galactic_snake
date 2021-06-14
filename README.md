@@ -1,18 +1,5 @@
-# King's Tithe Game Starter for Phaser
-Starter code for phaser game projects that incorporates Javascript, Typescript, and a variety of development tools.
-
-Inspiration/configuration from: 
-- https://github.com/joshuamorony/phaser3-typescript-webpack-capacitor
-
-## Install
-
-```
-npm install
-```
-
-```
-npx cap init
-```
+# Galactic Snake
+Play as an ancient bio-mechanical serpent whose destiny is to devour the universe. Try to grow as large as you can, and avoid destroying yourself. How colossal will you become?
 
 ## Develop
 
