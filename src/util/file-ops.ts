@@ -18,34 +18,42 @@ try {
     console.log("Full filesystem access not available. (Are we on mobile/web?) ", e);
 }
 
-// Specifier type to determine what file is being read from/written to
+/** Specifier type to determine what file is being read from/written to */
 export interface FileSpecifier {
-    // relative path to the file from the directory
+    /**
+     * The relative path to the file from the directory
+     */
     filePath: string,
-    // The root directory to use on desktops. This property is only used if
-    // location is set to 'data'. 'app' will use a subfolder in electron app.
-    // 'documents' will match files in the OS documents folder.
+    /**
+     * The root directory to use on desktops. This property is only used if
+     * location is set to 'data'. 'app' will use a subfolder in electron app.
+     * 'documents' will match files in the OS documents folder.
+     */
     desktopDataDirectory?: string
-    // Preset directories to use as root.
-    // Valid choices are: documents, data, app
-    // For mobile, 'documents' and 'data' work as described here:
-    // https://capacitorjs.com/docs/apis/filesystem#filesystemdirectory
-    // For mobile, 'app' works just like 'data'. (We can't save to app directory on mobile)
-    // For electron/desktop:
-    // 'documents' should save to the OS's documents folder
-    // 'data' should save to a folder specified in the desktopDataDirectory property
-    // 'app' will save to a subdirectory of the app, 'appdata/'
+    /**
+     * Preset directories to use as root.
+     * Choices are: documents, data, app
+     * These choices operate differently depending on platform.
+     * For mobile, 'documents' and 'data' work as described here:
+     * https://capacitorjs.com/docs/apis/filesystem#filesystemdirectory
+     * For mobile, 'app' works just like 'data'. (We can't save to app directory on mobile)
+     * For electron/desktop:
+     * 'documents' should save to the OS's documents folder
+     * 'data' should save to a folder specified in the desktopDataDirectory property
+     * 'app' will save to a subdirectory of the app, 'appdata/'
+     */
     location: string,
-    // When using web (such as dev server) how should we resolve save/load
-    // operations? (web does not have access to filesystem)
-    // THIS STILL NEEDS IMPLEMENTATION!!!!!!!
-    // Choices are:
-    //   - ram: simulate storage by putting data in main memory,
-    //          no persistence after reload
-    //   - local: use browser localStorage, the browser frequently cleans
-    //            this, so it is not a long-term storage solution
-    //   - pass (default): ignore the save/load statement, ensure the op is
-    //           non-critical before using this.
+    /**
+     * When using web (such as dev server) how should we resolve save/load
+     * operations? (web does not have access to filesystem)
+     * Choices are:
+     *   - ram: simulate storage by putting data in main memory,
+     *          no persistence after reload
+     *   - local: use browser localStorage, the browser frequently cleans
+     *            this, so it is not a long-term storage solution
+     *   - pass (default): ignore the save/load statement, ensure the op is
+     *           non-critical before using this.
+     */
     webResolve?: string
 }
 
