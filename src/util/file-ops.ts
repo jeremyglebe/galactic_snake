@@ -23,8 +23,13 @@ try {
     app = window.require('electron').remote.app
 } catch (e) {
     // Log if the full filesystem is not available through node
-    // (Not using electron)
-    console.log("Full filesystem access not available. (This is normal on mobile and web) ", e);
+    if (Capacitor.getPlatform() != 'electron') {
+        console.log("Full filesystem access not available. (This is normal on mobile and web)");
+    }
+    // If we are unable to import libraries, but SHOULD be using electron, print an error
+    else {
+        console.log("Full filesystem access not available:", e);
+    }
 }
 
 export async function readFile(file: string): Promise<string> {
@@ -100,15 +105,27 @@ async function _mobileWrite(file: string, data: string): Promise<void> {
 async function _webSimulateRead(file: string): Promise<string> {
     // Get a parsed object from the text saved in storage
     const obj = JSON.parse(localStorage.getItem(DATA_PREFIX));
-    // Using local storage to simulate reads, make a javascript call
-    return obj[file];
+    // Check if there even was existing save data
+    if (obj) {
+        // Using local storage to simulate reads, make a javascript call
+        return obj[file];
+    }
+    else { return null; }
 }
 
 async function _webSimulateWrite(file: string, data: string): Promise<void> {
     // Get a parsed object from the text saved in storage
     let obj = JSON.parse(localStorage.getItem(DATA_PREFIX));
-    // Update the object with our new "file"
-    obj[file] = data;
+    // Check if there even was existing save data
+    if (obj) {
+        // Update the object with our new "file"
+        obj[file] = data;
+    }
+    else {
+        // Create a new object, since there is none to update
+        obj = {};
+        obj[file] = data;
+    }
     // Store the object back into local storage
     localStorage.setItem(DATA_PREFIX, JSON.stringify(obj));
 }
