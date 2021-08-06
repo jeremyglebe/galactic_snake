@@ -11,31 +11,28 @@ Inspiration/configuration from:
 npm install
 ```
 
-```sh
-# Initializes the Capacitor project for native platforms
-npx cap init
-```
-
 ## Develop
 
 ```sh
 # Runs a developer server hosting the game
-npm run dev
+npm run serve
 # Runs a developer server hosting the game, also accessible by other lan
 # devices such as mobile phones
-npm run dev:lan
+npm run serve:lan
 # Runs a local server hosting the game, in production mode, good for
 # testing file sizes
-npm run prod
+npm run serve:prod
 ```
 
 ## Build
 
 ```sh
 # Builds the project (in production mode) as a web page, found in the
-# www/ folder. Also copies the web code to any added native projects in
-# their respective folders.
+# www/ folder.
 npm run build
+# Builds the project in development mode, typically only needed if a unique
+# error occurs on a given platform and logs are needed
+npm run build:dev
 ```
 
 ## Add Native Platforms
@@ -69,6 +66,10 @@ Standard Capactitor method
 ```sh
 # Build the web project
 npm run build
+# Copy the built web code to your native project of choice
+npx cap copy ios
+npx cap copy android
+npx cap copy @capacitor-community/electron
 # Open the native project of your choice
 npx cap open ios
 npx cap open android
