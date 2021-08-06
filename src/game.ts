@@ -1,7 +1,6 @@
 import * as Phaser from 'phaser';
 // import { BootScene } from './scenes/boot';
 
-import { Plugins } from '@capacitor/core';
 import { BASE_SIZE, SCREEN_WIDE, SCREEN_RATIO } from './constants';
 import { readFile, writeFile } from './util/file-ops';
 
@@ -25,8 +24,6 @@ const config: Phaser.Types.Core.GameConfig = {
     }
 };
 
-const { StatusBar, SplashScreen } = Plugins;
-
 export class KTGame extends Phaser.Game {
 
     constructor(config: Phaser.Types.Core.GameConfig) {
@@ -40,9 +37,6 @@ export class KTGame extends Phaser.Game {
                 readFile('kt_fileops_test.txt')
                     .then(text => console.log("File read: ", text));
             });
-
-        StatusBar.hide();
-        SplashScreen.hide();
 
     }
 

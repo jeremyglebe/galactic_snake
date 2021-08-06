@@ -51,9 +51,9 @@
     "phaser": "^3.55.2"
   },
   "scripts": {
-    "serve": "webpack && webpack-dev-server --mode development --open",
-    "serve:lan": "webpack && webpack-dev-server --mode development --host 0.0.0.0",
-    "serve:prod": "webpack && webpack-dev-server --mode production",
+    "serve": "webpack && webpack serve --mode development --open",
+    "serve:lan": "webpack && webpack serve --mode development --host 0.0.0.0",
+    "serve:prod": "webpack && webpack serve --mode production",
     "build": "webpack --mode production",
     "build:dev": "webpack",
     "android:init": "npm run build:dev && npx cap copy android && cap add android",
