@@ -33,30 +33,12 @@ export class KTGame extends Phaser.Game {
 
         super(config);
 
-        // Example of scene management
-        // this.scene.add('Boot', BootScene, false);
-        // this.scene.start('Boot');
-
         // File-ops write test
-        writeFile(
-            {
-                location: 'app',
-                filePath: 'kt_fileops_test.txt',
-                webResolve: 'ram'
-            },
-            "Hello there"
-        ).then(
-            () => {
+        writeFile('kt_fileops_test.txt', "Hello there")
+            .then(() => {
                 // File-ops read test
-                readFile(
-                    {
-                        location: 'app',
-                        filePath: 'kt_fileops_test.txt',
-                        webResolve: 'ram'
-                    }
-                ).then(
-                    text => console.log("File read: ", text)
-                );
+                readFile('kt_fileops_test.txt')
+                    .then(text => console.log("File read: ", text));
             });
 
         StatusBar.hide();
