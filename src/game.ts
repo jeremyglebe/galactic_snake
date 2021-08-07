@@ -1,16 +1,15 @@
 import * as Phaser from 'phaser';
-// import { BootScene } from './scenes/boot';
 
-import { BASE_SIZE, SCREEN_WIDE, SCREEN_RATIO } from './constants';
-import { readFile, writeFile } from './util/file-ops';
+import { GAME_SZ } from './constants';
+import { readFile, writeFile } from './utils/capacitor/file-ops';
 
 const config: Phaser.Types.Core.GameConfig = {
     parent: 'game',
     type: Phaser.AUTO,
     backgroundColor: '#000',
     // Example of sizing based on w/h ratio
-    width: SCREEN_WIDE ? BASE_SIZE * SCREEN_RATIO : BASE_SIZE,
-    height: SCREEN_WIDE ? BASE_SIZE : BASE_SIZE / SCREEN_RATIO,
+    width: GAME_SZ.width,
+    height: GAME_SZ.height,
     zoom: 1,
     dom: {
         createContainer: true
