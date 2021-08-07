@@ -7,8 +7,11 @@ Inspiration/configuration from:
 ## Install
 
 ```sh
-# Installs dependencies for this project
+# Installs node dependencies for this project
 npm install
+# Installs github dependencies for this project
+git submodule init
+git submodule update
 ```
 
 ## Develop
