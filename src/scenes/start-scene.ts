@@ -177,8 +177,8 @@ export class StartScene extends Phaser.Scene {
         }
         this.add.text(w / 2, h - 150, "Game Instructions", intrConf).setOrigin(0.5);
         this.add.text(w / 2, h - 110, "Click/Tap to control the snake", intrConf).setOrigin(0.5);
-        this.add.text(w / 2, h - 80, "Click/Tap the cloud in the top-right corner", intrConf).setOrigin(0.5);
-        this.add.text(w / 2, h - 55, "to upload your score to the cloud", intrConf).setOrigin(0.5);
+        // this.add.text(w / 2, h - 80, "Click/Tap the cloud in the top-right corner", intrConf).setOrigin(0.5);
+        // this.add.text(w / 2, h - 55, "to upload your score to the cloud", intrConf).setOrigin(0.5);
         let g = this.add.graphics();
         g.lineStyle(2, 0xffffff, 1);
         g.strokeRect(w / 2 - 250, h - 130, 500, 100);

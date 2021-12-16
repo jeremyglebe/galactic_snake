@@ -115,6 +115,7 @@ export class SpaceScene extends Phaser.Scene {
         let planet = this.physics.add.image(Math.random() * (this.sys.canvas.width - 10) + 5, this.sys.canvas.height, `planet${pnum}`);
         planet.setVelocity(0, -100);
         planet.setScale(Math.random() * 1.5 + 2)
+        planet.setCircle(planet.width/2);
         this.lastSpawn = (new Date()).getTime();
         let ov = this.physics.add.overlap(this.serpent.head, planet, () => {
             ov.destroy();

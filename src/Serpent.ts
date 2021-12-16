@@ -2,24 +2,28 @@ import { easyAngle360 } from "./util/math-ops";
 
 export class Serpent {
     scene: Phaser.Scene;
-    head: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody = null;
-    body: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody[] = [];
-    tail: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody = null;
+    head: Phaser.GameObjects.Sprite = null;
+    body: Phaser.GameObjects.Sprite[] = [];
+    tail: Phaser.GameObjects.Sprite = null;
 
     constructor(scene) {
         this.scene = scene;
         // Create body parts
         this.tail = scene.physics.add.sprite(0, 0, 'snake_tail')
             .setScale(2)
-            .setBodySize(10, 10);
+            // .setBodySize(10, 10);
+            .setCircle(6, 6, 8);
         this.body.push(scene.physics.add.sprite(0, 0, 'snake_body')
             .setScale(2)
-            .setBodySize(20, 20));
+            // .setBodySize(20, 20));
+            .setCircle(10, 3, 4));
         // Head is offset a bit from the other stuff
-        this.head = scene.physics.add.sprite(45, 45, 'snake_head').setScale(2)
+        this.head = scene.physics.add.sprite(45, 45, 'snake_head')
+            .setScale(2)
             .setCollideWorldBounds(true, 1, 1)
             .setDepth(1)
-            .setBodySize(20, 20);
+            // .setBodySize(20, 20);
+            .setCircle(13, 3, 6);
         // Starting motion
         this.scene.physics.moveTo(this.head, 100, 100, 200);
     }
@@ -37,7 +41,8 @@ export class Serpent {
         // Create a new body segment at the tail
         let seg = this.scene.physics.add.sprite(this.tail.x, this.tail.y, 'snake_body')
             .setScale(2)
-            .setBodySize(20, 20);
+            // .setBodySize(20, 20);
+            .setCircle(10, 3, 4);
         this.body.push(seg);
         let size = this.body.length;
         this.scene.physics.add.overlap(this.head, seg, () => {
@@ -60,7 +65,16 @@ export class Serpent {
 
     changeWormDirection() {
         let d = Phaser.Math.Distance.BetweenPoints(this.head, this.scene.input.activePointer);
+        let a = Phaser.Math.Angle.BetweenPoints(this.head, this.scene.input.activePointer);
+        a += this.head.rotation;
+        if(a > Math.PI){
+            a -= 2 * Math.PI;
+        }
+        else if(a < -Math.PI){
+            a += 2 * Math.PI;
+        }
         if (Math.abs(d) > 15)
+        // if (Math.abs(d) > 15 && a < Math.PI - .5 && a > -Math.PI + .5)
             this.scene.physics.moveToObject(this.head, this.scene.input.activePointer, 200);
     }
 
@@ -85,6 +99,12 @@ export class Serpent {
             if (Math.abs(d) > 44) {
                 this.scene.physics.moveToObject(this.body[i], this.body[i - 1], 200);
             }
+            // this.scene.tweens.add({
+            //     targets: [this.body[i]],
+            //     x: this.body[i-1].x + d*Math.cos(hAngle),
+            //     y: this.body[i-1].y + d*Math.sin(hAngle),
+            //     duration: 16
+            // });
         }
 
         // Tail angle and movement
