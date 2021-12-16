@@ -55,6 +55,7 @@
     "dev:lan": "webpack && webpack-dev-server --mode development --host 0.0.0.0",
     "prod": "webpack && webpack-dev-server --mode production",
     "build": "webpack --mode production && npx cap copy",
+    "upload": "npm run build && butler push www drowsyprof/galactic-snake:game",
     "android:init": "npm run build && cap add android",
     "android": "npm run build && cap open android",
     "electron:init": "npm run build && cap add @capacitor-community/electron",
