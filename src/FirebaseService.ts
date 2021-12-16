@@ -1,9 +1,16 @@
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
-import firebase from "firebase/app";
+import { initializeApp, FirebaseApp } from "firebase/app";
 // Add the Firebase services that you want to use
-import "firebase/auth";
-import "firebase/firestore";
+import {
+    Auth, getAuth, User,
+    GoogleAuthProvider, signInWithPopup, signOut
+} from "firebase/auth";
+import {
+    Firestore, getFirestore,
+    CollectionReference, collection,
+    doc, setDoc, getDoc
+} from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyAhc4pH_QuLo4e27qy9LJqoWsWJOeGdq_I",
@@ -18,15 +25,19 @@ const firebaseConfig = {
 export class FirebaseService {
 
     private static instance: FirebaseService;
-    app: firebase.app.App = null;
-    scoresCollection: firebase.firestore.CollectionReference;
+    app: FirebaseApp = null;
+    db: Firestore = null;
+    auth: Auth = null;
+    scoresCollection: CollectionReference;
 
     // Private constructor to create first singleton instance
     private constructor() {
         // Initialize Firebase
-        this.app = firebase.initializeApp(firebaseConfig);
+        this.app = initializeApp(firebaseConfig);
+        this.db = getFirestore(this.app);
+        this.auth = getAuth(this.app);
         // firebase.analytics();
-        this.scoresCollection = this.app.firestore().collection('user_highscores');
+        this.scoresCollection = collection(this.db, 'user_highscores');
     }
 
     // Get method for singleton
@@ -41,9 +52,10 @@ export class FirebaseService {
         try {
             let u = this.user();
             if (u) {
-                let doc = await this.scoresCollection.doc(u.uid).get();
-                if (doc.exists) {
-                    let data = doc.data();
+                let targetDoc = await doc(this.scoresCollection, u.uid);
+                let docObj = await getDoc(targetDoc);
+                if (docObj.exists) {
+                    let data = docObj.data();
                     return data['score'];
                 }
             }
@@ -58,7 +70,8 @@ export class FirebaseService {
         let u = this.user();
         if (u) {
             try {
-                await this.scoresCollection.doc(u.uid).set({
+                const targetDoc = await doc(this.scoresCollection, u.uid);
+                await setDoc(targetDoc, {
                     name: u.displayName,
                     score: score
                 });
@@ -74,9 +87,9 @@ export class FirebaseService {
 
     async signInWithGoogle() {
         // Sign in with google
-        var provider = new firebase.auth.GoogleAuthProvider();
+        const provider = new GoogleAuthProvider();
         try {
-            return await firebase.auth().signInWithPopup(provider);
+            return await signInWithPopup(this.auth, provider);
         }
         catch (e) {
             throw (e);
@@ -86,18 +99,18 @@ export class FirebaseService {
     async signOut() {
         // Sign in with google
         try {
-            await firebase.auth().signOut();
+            await signOut(this.auth);
         }
         catch (e) {
             throw (e);
         }
     }
 
-    user(): firebase.User {
+    user(): User {
         if (this.app)
-            return this.app.auth().currentUser;
+            return this.auth.currentUser;
         else
             return null;
     }
 }
-export type FirebaseUser = firebase.User;
+export type FirebaseUser = User;

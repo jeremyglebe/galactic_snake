@@ -1,3 +1,4 @@
+import { orderBy, limit, query, onSnapshot } from "firebase/firestore";
 import { UIBTN, UITXT } from "../constants";
 import { FirebaseService, FirebaseUser } from "../FirebaseService";
 
@@ -138,7 +139,7 @@ export class StartScene extends Phaser.Scene {
         // Each score will occupy 36px of height. There is room for around 7
         // in the smallest height settings. So, for each 42px above 800h, one
         // more score will be allowed
-        const limit = 7 + Math.floor((h - 800) / 42)
+        const limit_num = 7 + Math.floor((h - 800) / 42)
         // Create the score table text
         this.scoresText = this.add.text(x, y, ' '.repeat(10) + "High Scores", {
             fontSize: '36px',
@@ -148,21 +149,23 @@ export class StartScene extends Phaser.Scene {
         // Add a neat little bar of asterisks
         this.scoresText.text += '\n' + '*'.repeat(30) + '\n';
         // Create a reference to a specific query on the scores collection
-        let query = await this.fire.scoresCollection
-            .orderBy('score', 'desc')
-            .limit(limit);
+        let order_constraint = orderBy('score', 'desc');
+        let limit_constraint = limit(limit_num);
+        let query_var = query(this.fire.scoresCollection, order_constraint, limit_constraint);
         // Get a snapshot of the query from the database
-        let snap = await query.get();
-        // Populate the table with the values from the database
-        snap.forEach(
-            (docSnap) => {
-                const data = docSnap.data();
-                const { name, score } = data;
-                let scoreString = `${score}`.padStart(7, ' ');
-                let nameString = name.length > 15 ? name.substr(0, 15) : name.padStart(15, ' ');
-                this.scoresText.text += `  ${nameString}... ${scoreString}\n`;
-            }
-        );
+        onSnapshot(query_var, (snap) => {
+            this.scoresText.text = "";
+            // Populate the table with the values from the database
+            snap.forEach(
+                (docSnap) => {
+                    const data = docSnap.data();
+                    const { name, score } = data;
+                    let scoreString = `${score}`.padStart(7, ' ');
+                    let nameString = name.length > 15 ? name.substr(0, 15) : name.padStart(15, ' ');
+                    this.scoresText.text += `  ${nameString}... ${scoreString}\n`;
+                }
+            );
+        });
     }
 
     createInstructions() {

@@ -34,8 +34,6 @@ const config: any = {
     }
 };
 
-const { StatusBar, SplashScreen } = Plugins;
-
 export class KTGame extends Phaser.Game {
 
     constructor(config: Phaser.Types.Core.GameConfig) {
